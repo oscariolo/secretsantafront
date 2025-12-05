@@ -64,6 +64,31 @@ export default function RoomPage() {
     }
   };
 
+  const handleShuffle = async () => {
+    if (!confirm("Are you sure you want to re-shuffle the Secret Santa assignments? This will reset all current assignments.")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8000/api/secret-santa/room/${roomId}/shuffle`, {
+        method: "POST",
+      });
+
+      if (response.ok) {
+        alert("Assignments have been re-shuffled!");
+        setSelectedParticipant(null);
+        setSecretSanta(null);
+        window.location.reload();
+      } else {
+        const errorData = await response.json();
+        setError(errorData.detail || "Failed to shuffle assignments.");
+        console.error("Shuffle error:", errorData);
+      }
+    } catch (error) {
+      setError("An error occurred while shuffling.");
+      console.error("Error shuffling:", error);
+    }
+  };
   if (error) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-100">
@@ -83,8 +108,18 @@ export default function RoomPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <main className="w-full max-w-2xl p-8 space-y-6 bg-white rounded-lg shadow-md">
-        <h1 className="text-3xl font-bold text-center text-gray-800">Secret Santa Room</h1>
-        <p className="text-center text-gray-600">Room ID: {room.id}</p>
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-800">Secret Santa Room</h1>
+            <p className="text-gray-600 mt-1">Room ID: {room.id}</p>
+          </div>
+          <button
+            onClick={handleShuffle}
+            className="px-4 py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+          >
+            Re-shuffle
+          </button>
+        </div>
         
         {!selectedParticipant ? (
           <div>
