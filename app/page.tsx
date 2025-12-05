@@ -35,7 +35,7 @@ export default function Home() {
     }
 
     try {
-      const response = await fetch("/api/secret-santa/room", {
+      const response = await fetch("/apiSpring/secret-santa/room", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

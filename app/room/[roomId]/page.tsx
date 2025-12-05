@@ -25,7 +25,7 @@ export default function RoomPage() {
     if (roomId) {
       const fetchRoom = async () => {
         try {
-          const response = await fetch(`/api/secret-santa/room/${roomId}`);
+          const response = await fetch(`/apiFast/secret-santa/room/${roomId}`);
           if (response.ok) {
             const text = await response.text();
             try {
@@ -51,7 +51,7 @@ export default function RoomPage() {
     setSelectedParticipant(participant);
     setSecretSanta(null); 
     try {
-      const response = await fetch(`/api/secret-santa/room/${roomId}/participant/${participant.id}`);
+      const response = await fetch(`/apiFast/secret-santa/room/${roomId}/participant/${participant.id}`);
       if (response.ok) {
         const santaName = await response.text();
         setSecretSanta(santaName);
